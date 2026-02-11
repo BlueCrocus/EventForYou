@@ -2,11 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <!-- ✅ iOS 노치/홈바 safe-area 반영 + iOS/Android 뷰포트 안정화 -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>4주년 이벤트 💌</title>
 
-  <!-- ✅ Favicon (요청 경로) -->
+  <!-- ✅ Favicon -->
   <link rel="icon" href="./img/wx.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="./img/wx.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="./img/wx.ico" />
@@ -56,13 +55,10 @@
         var(--bg);
       color:#fff;
       overflow-x:hidden;
-
-      /* ✅ iOS safe-area */
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* ✅ iOS/Android 100vh 문제 해결 (dvh 지원 브라우저는 자동 적용) */
     .wrap{
       min-height:100vh;
       min-height:100dvh;
@@ -75,34 +71,18 @@
 
     .topbar{
       width:min(980px, 100%);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:14px;
-      opacity:.92;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px; margin-bottom:14px; opacity:.92;
       flex-wrap:wrap;
     }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-      font-size:14px;
-    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; font-size:14px; }
     .dot{
       width:12px;height:12px;border-radius:999px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 0 0 6px rgba(255,77,125,.12);
       flex:0 0 auto;
     }
-    .hint{
-      font-size:11px;
-      color:rgba(255,255,255,.7);
-      line-height:1.35;
-      max-width: 520px;
-    }
+    .hint{ font-size:11px; color:rgba(255,255,255,.7); line-height:1.35; max-width:520px; }
 
     .stage{
       width:min(980px, 100%);
@@ -113,74 +93,40 @@
       overflow:hidden;
       position:relative;
     }
-
-    .stageInner{
-      padding:18px;
-      display:none;
-      animation: fadeUp .55s ease both;
-    }
+    .stageInner{ padding:18px; display:none; animation: fadeUp .55s ease both; }
     .stageInner.active{ display:block; }
-    @media (max-width: 420px){
-      .stageInner{ padding:14px; }
-    }
-
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
+    @media (max-width: 420px){ .stageInner{ padding:14px; } }
+    @keyframes fadeUp{ from{ opacity:0; transform: translateY(10px); } to{ opacity:1; transform: translateY(0); } }
 
     .btn{
-      appearance:none;
-      border:0;
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-weight:900;
-      cursor:pointer;
-      color:#fff;
+      appearance:none; border:0; border-radius: 999px;
+      padding: 12px 16px; font-weight:900;
+      cursor:pointer; color:#fff;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 12px 26px rgba(255,77,125,.22);
       transition: transform .15s ease, filter .15s ease;
       user-select:none;
-      min-height:44px; /* ✅ 터치 영역 */
+      min-height:44px;
       touch-action: manipulation;
       white-space:nowrap;
     }
     .btn:hover{ transform: translateY(-1px); filter: brightness(1.04); }
     .btn:active{ transform: translateY(1px) scale(.99); }
-
     .btn.secondary{
       background: rgba(255,255,255,.10);
       border:1px solid rgba(255,255,255,.16);
       box-shadow:none;
       font-weight:850;
     }
-
     .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    @media (max-width: 420px){
-      .btn{ width:100%; }
-    }
+    @media (max-width: 420px){ .btn{ width:100%; } }
 
     /* Stage 0 - Envelope */
-    .envelopeWrap{
-      display:grid;
-      place-items:center;
-      padding:44px 18px 52px;
-      text-align:center;
-    }
-    @media (max-width: 420px){
-      .envelopeWrap{ padding: 26px 10px 34px; }
-    }
-    .title{
-      font-size: clamp(20px, 4.6vw, 34px);
-      margin:0 0 10px;
-      letter-spacing:-.4px;
-    }
-    .sub{
-      margin:0 0 22px;
-      color: rgba(255,255,255,.75);
-      line-height:1.6;
-      font-size: 13.5px;
-    }
+    .envelopeWrap{ display:grid; place-items:center; padding:44px 18px 52px; text-align:center; }
+    @media (max-width: 420px){ .envelopeWrap{ padding: 26px 10px 34px; } }
+
+    .title{ font-size: clamp(20px, 4.6vw, 34px); margin:0 0 10px; letter-spacing:-.4px; }
+    .sub{ margin:0 0 22px; color: rgba(255,255,255,.75); line-height:1.6; font-size: 13.5px; }
 
     .envelope{
       width:min(420px, 86vw);
@@ -190,7 +136,12 @@
       transform-style:preserve-3d;
       transition: transform .6s cubic-bezier(.2,.8,.2,1);
       margin: 8px 0 18px;
+      /* ✅ 혹시 모를 iOS 서브픽셀 밀림 방지 */
+      left: 50%;
+      transform: translateX(-50%);
     }
+    .envelope.open{ transform: translateX(-50%) translateY(-4px) rotateX(8deg); }
+
     .envBase{
       position:absolute; inset:0;
       border-radius: 18px;
@@ -216,6 +167,8 @@
       border-bottom:1px solid rgba(255,255,255,.18);
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
     }
+    .envelope.open .envFlap{ transform: rotateX(170deg); }
+
     .seal{
       position:absolute; left:50%; top:52%;
       transform: translate(-50%, -50%);
@@ -227,21 +180,11 @@
       border:1px solid rgba(255,255,255,.35);
     }
     .seal small{ opacity:.92; font-size:14px; }
-
-    .envelope.open{ transform: translateY(-4px) rotateX(8deg); }
-    .envelope.open .envFlap{ transform: rotateX(170deg); }
     .tiny{ font-size:12px; color: rgba(255,255,255,.7); }
 
     /* Stage 1~3 - Letter snippets */
-    .letterGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 16px;
-      align-items:start;
-    }
-    @media (max-width: 860px){
-      .letterGrid{ grid-template-columns: 1fr; }
-    }
+    .letterGrid{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items:start; }
+    @media (max-width: 860px){ .letterGrid{ grid-template-columns: 1fr; } }
 
     .paper{
       background: rgba(255,255,255,.92);
@@ -252,9 +195,7 @@
       position:relative;
       overflow:hidden;
     }
-    @media (max-width: 420px){
-      .paper{ padding: 16px 14px 12px; }
-    }
+    @media (max-width: 420px){ .paper{ padding: 16px 14px 12px; } }
     .paper:before{
       content:"";
       position:absolute; inset:0;
@@ -276,41 +217,27 @@
 
     /* Game */
     .gameHeader{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom: 14px;
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom: 14px;
     }
     .gameHeader h2{ margin:0; font-size:18px; letter-spacing:-.2px; }
-    .stats{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:12px;
-      color: rgba(255,255,255,.78);
-    }
-    .pill{
-      padding:6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-    }
+    .stats{ display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color: rgba(255,255,255,.78); }
+    .pill{ padding:6px 10px; border-radius:999px; background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); }
+    .toast{ margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.8); min-height: 20px; line-height:1.4; }
 
-    /* ✅ 핵심: 기기별 자동 컬럼/카드 크기 최적화 */
+    /* ✅ 요청: 스테이지별 고정 그리드 (1:2x2 / 2:3x2 / 3:3x3) */
     .board{
+      --cols: 3;
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
       gap: 10px;
       padding: 6px 2px 10px;
+
+      /* 가운데 정렬 + 너무 넓게 퍼지는 것 방지 */
+      width: min(520px, 100%);
+      margin: 0 auto;
     }
-    @media (max-width: 360px){
-      .board{
-        grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
-        gap: 8px;
-      }
-    }
+    @media (max-width: 360px){ .board{ gap: 8px; } }
 
     .card{
       aspect-ratio: 1 / 1.15;
@@ -339,9 +266,7 @@
       border:1px solid rgba(255,255,255,.14);
       overflow:hidden;
     }
-    .front{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-    }
+    .front{ background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); }
     .front .q{ font-weight:900; font-size: 20px; opacity:.9; letter-spacing:.8px; }
     .back{
       transform: rotateY(180deg);
@@ -350,7 +275,6 @@
       overflow:hidden;
     }
 
-    /* ✅ 이미지 프레임: 모든 사진을 카드에 자동 맞춤(A: cover) */
     .imgFrame{
       width: 90%;
       height: 90%;
@@ -381,22 +305,12 @@
       background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(59,130,246,.14));
       border-color: rgba(255,255,255,.22);
     }
-    .toast{
-      margin-top: 10px;
-      font-size: 13px;
-      color: rgba(255,255,255,.8);
-      min-height: 20px;
-      line-height: 1.4;
-    }
 
-    /* ✅ 치트(전체 공개) */
     .card.cheat .cardInner{ transform: rotateY(180deg); }
 
     /* Ending */
     .ending{ padding: 34px 18px 40px; text-align:center; position:relative; overflow:hidden; }
-    @media (max-width: 420px){
-      .ending{ padding: 26px 12px 30px; }
-    }
+    @media (max-width: 420px){ .ending{ padding: 26px 12px 30px; } }
     .big{ font-size: clamp(20px, 4.6vw, 34px); margin: 0 0 10px; }
     .gift{
       width: min(650px, 92vw);
@@ -410,7 +324,7 @@
       font-size: 14.5px;
       text-align:left;
       white-space:pre-wrap;
-      overflow-wrap: anywhere;
+      overflow-wrap:anywhere;
     }
     .confetti{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
     .piece{
@@ -424,7 +338,6 @@
       to{ transform: translateY(110vh) rotate(540deg); opacity:0.9; }
     }
 
-    /* ✅ 칭찬 스티커 팝업 */
     #sticker{
       position: fixed;
       left: 50%;
@@ -437,10 +350,7 @@
       filter: drop-shadow(0 18px 40px rgba(0,0,0,.35));
       transition: opacity .18s ease, transform .22s cubic-bezier(.2,.8,.2,1);
     }
-    #sticker.show{
-      opacity: 1;
-      transform: translate(-50%, 0) scale(1);
-    }
+    #sticker.show{ opacity: 1; transform: translate(-50%, 0) scale(1); }
 
     .footer{
       width:min(980px, 100%);
@@ -491,10 +401,9 @@
             <div class="sig">— from. 장무꾼</div>
           </div>
           <div class="sideCard">
-            <h3>🎮 Stage 1 미션 (4쌍)</h3>
+            <h3>🎮 Stage 1 미션 (2쌍 / 2×2)</h3>
             <ul>
-              <li>카드 8장(4쌍)만 맞추면 통과!</li>
-              <li>뇌야… 힘내라… 🧠⚡</li>
+              <li>2×2 (4장)으로 가볍게 시작!</li>
               <li>클리어하면 다음 편지 조각 해금!</li>
             </ul>
             <div style="height:10px"></div>
@@ -514,10 +423,9 @@
             <div class="sig">— from. 장무꾼</div>
           </div>
           <div class="sideCard">
-            <h3>🎮 Stage 2 미션 (6쌍)</h3>
+            <h3>🎮 Stage 2 미션 (3쌍 / 3×2)</h3>
             <ul>
-              <li>카드 12장(6쌍)… 오케이?</li>
-              <li>틀려도 됨. 귀여움으로 무효 처리 😌</li>
+              <li>3×2 (6장)으로 난이도 업!</li>
               <li>클리어하면 마지막 조각까지!</li>
             </ul>
             <div style="height:10px"></div>
@@ -537,10 +445,10 @@
             <div class="sig">— from. 장무꾼</div>
           </div>
           <div class="sideCard">
-            <h3>🎮 Stage 3 미션 (8쌍)</h3>
+            <h3>🎮 Stage 3 미션 (4쌍 + 보너스 / 3×3)</h3>
             <ul>
-              <li>카드 16장(8쌍) 최종 보스!</li>
-              <li>여기까지 왔으면 거의 다 했다 😎</li>
+              <li>3×3 (9장): 4쌍(8장) + 보너스 1장!</li>
+              <li>보너스(💝)는 뒤집으면 즉시 매칭 처리!</li>
               <li>클리어하면 풀버전 편지 OPEN 💌</li>
             </ul>
             <div style="height:10px"></div>
@@ -579,12 +487,8 @@
         <div class="ending">
           <div class="confetti" id="confetti"></div>
           <h2 class="big">클리어! 🎉 풀버전 편지 OPEN</h2>
-          <p style="margin:0; color:rgba(255,255,255,.78); line-height:1.7;">
-            축하해! 이제 full 편지~
-          </p>
-
+          <p style="margin:0; color:rgba(255,255,255,.78); line-height:1.7;">축하해! 이제 full 편지~</p>
           <div class="gift" id="fullLetter"></div>
-
           <div class="row" style="justify-content:center;">
             <button class="btn" id="btnAgain">처음부터 다시</button>
           </div>
@@ -592,7 +496,6 @@
         </div>
       </section>
 
-      <!-- ✅ 스티커 오버레이 -->
       <div id="sticker" aria-hidden="true"></div>
     </main>
 
@@ -611,7 +514,6 @@
       stageGame: document.getElementById('stageGame'),
       stageEnd: document.getElementById('stageEnd'),
     };
-
     function showStage(id){
       Object.values(stages).forEach(s => s.classList.remove('active'));
       stages[id].classList.add('active');
@@ -619,7 +521,7 @@
     }
 
     // =============================
-    // 1) 이미지(8장) - 레포 내 img 폴더
+    // 1) 이미지(8장)
     // =============================
     const ALL_IMAGES = [
       "img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg",
@@ -627,7 +529,7 @@
     ];
 
     // =============================
-    // 2) 편지 조각(1~2줄) + 풀버전
+    // 2) 편지 텍스트
     // =============================
     const snippet1 = `우리가 만난지 어느덧 4년이 됐는데,\n이젠 너가 없는 앞으로가 짐작도 안가—`;
     const snippet2 = `나의 20대는 쭉 너로 추억이 될거야! \n항상 나에게 힘이 되어줘서 고마워♥️`;
@@ -658,7 +560,6 @@
 
 사랑해요♥️
 `;
-
     document.getElementById('fullLetter').textContent = fullLetterText;
 
     // =============================
@@ -678,20 +579,18 @@
     btnSkipIntro.addEventListener('click', ()=> showStage('stage1'));
 
     // =============================
-    // 4) 스티커 팝업 (Stage별 이모지)
+    // 4) 스티커
     // =============================
     const stickerEl = document.getElementById('sticker');
     const STAGE_STICKER = { 1:"🥳", 2:"😎", 3:"👑" };
-
     function popSticker(emoji){
-      if(!stickerEl) return;
       stickerEl.textContent = emoji;
       stickerEl.classList.add('show');
       setTimeout(()=> stickerEl.classList.remove('show'), 650);
     }
 
     // =============================
-    // 5) 게임 공통 로직
+    // 5) 게임
     // =============================
     const board = document.getElementById('board');
     const toast = document.getElementById('toast');
@@ -707,22 +606,31 @@
 
     const cheerMsgs = [
       "뇌야… 일해라… 🧠⚡",
-      "이거 맞추면 풀편지 열린다. 진짜임. (아마도)",
+      "이거 맞추면 풀편지 열린다. 진짜임.",
       "지금 너… 천재 모드 켰지?",
       "실패해도 귀여움으로 상쇄됨 😌",
       "한 번만 더! 내가 봐준다 😎",
     ];
 
-    let currentLetterStage = 1; // 1,2,3
-    let currentPairCount = 4;
+    // ✅ 스테이지별 (cols, rows)
+    // stage1: 2x2 => 2 pairs(4 cards)
+    // stage2: 3x2 => 3 pairs(6 cards)
+    // stage3: 3x3 => 4 pairs(8 cards) + bonus(1 card)
+    const STAGE_CONFIG = {
+      1: { cols: 2, pairs: 2, bonus: false },
+      2: { cols: 3, pairs: 3, bonus: false },
+      3: { cols: 3, pairs: 4, bonus: true  },
+    };
 
+    let currentLetterStage = 1;
     let deck = [];
     let first = null;
     let second = null;
     let lock = false;
 
     let tries = 0;
-    let matched = 0;
+    let matched = 0;     // 매칭된 "세트" 수 (pairs + bonus(있으면 1))
+    let totalSets = 0;   // 목표 세트 수
     let timer = null;
     let seconds = 0;
 
@@ -734,59 +642,78 @@
       }
       return a;
     }
-
     function setToast(msg){ toast.textContent = msg; }
 
-    function resetStats(pairCount){
+    function resetStats(targetSets){
       tries = 0;
       matched = 0;
       seconds = 0;
       triesEl.textContent = tries;
       matchedEl.textContent = matched;
-      totalPairsEl.textContent = pairCount;
+      totalPairsEl.textContent = targetSets;
       timeEl.textContent = seconds;
     }
 
-    function stopTimer(){
-      if(timer){ clearInterval(timer); timer = null; }
-    }
+    function stopTimer(){ if(timer){ clearInterval(timer); timer = null; } }
     function startTimer(){
       stopTimer();
-      timer = setInterval(()=>{
-        seconds++;
-        timeEl.textContent = seconds;
-      }, 1000);
+      timer = setInterval(()=>{ seconds++; timeEl.textContent = seconds; }, 1000);
     }
 
-    function buildBoard(pairCount){
-      board.innerHTML = "";
-      const picked = shuffle(ALL_IMAGES).slice(0, pairCount);
+    function buildBoardForStage(stage){
+      const cfg = STAGE_CONFIG[stage];
 
-      deck = shuffle([...picked, ...picked]).map((src, idx)=>({
-        id: idx,
-        src,
-        matched:false
-      }));
+      // ✅ 그리드 컬럼 강제
+      board.style.setProperty('--cols', String(cfg.cols));
+
+      board.innerHTML = "";
+
+      // pairs 만큼만 뽑고, 2장씩 만든다
+      const picked = shuffle(ALL_IMAGES).slice(0, cfg.pairs);
+      let cards = [...picked, ...picked].map((src)=>({ kind:'img', src, matched:false }));
+
+      // stage3 bonus 1장 추가 (3x3을 위해 9번째)
+      if(cfg.bonus){
+        cards.push({ kind:'bonus', src:'', matched:false });
+      }
+
+      // 섞고 id 부여
+      deck = shuffle(cards).map((c, idx)=>({ id: idx, ...c }));
 
       deck.forEach((c)=>{
         const card = document.createElement('button');
         card.className = "card";
         card.type = "button";
-        card.dataset.id = c.id;
+        card.dataset.id = String(c.id);
 
-        card.innerHTML = `
-          <div class="cardInner">
-            <div class="cardFace front"><div class="q">?</div></div>
-            <div class="cardFace back">
-              <div class="imgFrame">
-                <img class="cardImg" src="${c.src}" alt="memory card" draggable="false" />
+        if(c.kind === 'bonus'){
+          card.innerHTML = `
+            <div class="cardInner">
+              <div class="cardFace front"><div class="q">?</div></div>
+              <div class="cardFace back">
+                <div style="font-size:42px; filter: drop-shadow(0 12px 24px rgba(0,0,0,.25));">💝</div>
               </div>
             </div>
-          </div>
-        `;
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="cardInner">
+              <div class="cardFace front"><div class="q">?</div></div>
+              <div class="cardFace back">
+                <div class="imgFrame">
+                  <img class="cardImg" src="${c.src}" alt="memory card" draggable="false" />
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
         card.addEventListener('click', ()=> onFlip(card));
         board.appendChild(card);
       });
+
+      totalSets = cfg.pairs + (cfg.bonus ? 1 : 0);
+      resetStats(totalSets);
     }
 
     function flip(cardEl, on){ cardEl.classList.toggle('flipped', on); }
@@ -796,16 +723,23 @@
       cardEl.setAttribute('aria-disabled','true');
     }
 
-    // ✅ 시작할 때 1초 치트 공개
     function cheatRevealOneSecond(){
       const cards = board.querySelectorAll('.card');
       cards.forEach(c => c.classList.add('cheat'));
       setToast("치트 발동! 1초만 전체 공개 😎");
-
       setTimeout(()=>{
         cards.forEach(c => c.classList.remove('cheat'));
         setToast("치트 종료. 이제 진짜 실력 보여줘 👀");
       }, 1000);
+    }
+
+    function completeStageIfDone(){
+      if(matched === totalSets){
+        stopTimer();
+        popSticker(STAGE_STICKER[currentLetterStage] || "🥳");
+        setToast("클리어! 다음 편지로 이동한다… ✨");
+        setTimeout(()=> advanceAfterWin(), 850);
+      }
     }
 
     function onFlip(cardEl){
@@ -822,6 +756,18 @@
 
       flip(cardEl, true);
 
+      // ✅ 보너스 카드: 뒤집는 즉시 "1세트" 매칭 처리
+      if(card.kind === 'bonus'){
+        card.matched = true;
+        markMatched(cardEl);
+        matched++;
+        matchedEl.textContent = matched;
+        setToast("보너스 발견! 💝 (즉시 매칭 처리)");
+        first = null; second = null; lock = false;
+        completeStageIfDone();
+        return;
+      }
+
       if(!first){
         first = cardEl;
         setToast("좋아! 하나 더 뒤집어봐 👀");
@@ -832,13 +778,22 @@
       tries++;
       triesEl.textContent = tries;
 
-      const a = deck[Number(first.dataset.id)].src;
-      const b = deck[Number(second.dataset.id)].src;
+      const a = deck[Number(first.dataset.id)];
+      const b = deck[Number(second.dataset.id)];
 
-      if(a === b){
-        deck[Number(first.dataset.id)].matched = true;
-        deck[Number(second.dataset.id)].matched = true;
+      // 둘 중 하나라도 bonus면(사실 위에서 return되지만 안전)
+      if(a.kind !== 'img' || b.kind !== 'img'){
+        lock = true;
+        setTimeout(()=>{
+          flip(first, false);
+          flip(second, false);
+          first = null; second = null; lock = false;
+        }, 500);
+        return;
+      }
 
+      if(a.src === b.src){
+        a.matched = true; b.matched = true;
         markMatched(first);
         markMatched(second);
 
@@ -847,16 +802,7 @@
         setToast("매칭 성공! 🎯");
 
         first = null; second = null;
-
-        if(matched === currentPairCount){
-          stopTimer();
-
-          // ✅ Stage별 스티커
-          popSticker(STAGE_STICKER[currentLetterStage] || "🥳");
-
-          setToast("클리어! 다음 편지로 이동한다… ✨");
-          setTimeout(()=> advanceAfterWin(), 850);
-        }
+        completeStageIfDone();
       } else {
         lock = true;
         setToast("아쉽다! 잠깐 보여줄게 😝");
@@ -871,19 +817,22 @@
       }
     }
 
-    function startGame(letterStage, pairCount){
-      currentLetterStage = letterStage;
-      currentPairCount = pairCount;
+    function startGame(stage){
+      currentLetterStage = stage;
 
-      gameTitle.textContent = `🧠 Stage ${letterStage} 기억 맞추기 (${pairCount}쌍)`;
-      resetStats(pairCount);
+      const cfg = STAGE_CONFIG[stage];
+      const label =
+        stage === 1 ? "2×2" :
+        stage === 2 ? "3×2" :
+        "3×3";
+
+      gameTitle.textContent = `🧠 Stage ${stage} 기억 맞추기 (${label})`;
       first = null; second = null; lock = false;
       stopTimer();
-      buildBoard(pairCount);
+      buildBoardForStage(stage);
       setToast("카드를 뒤집어 같은 사진을 찾아봐!");
       showStage('stageGame');
 
-      // ✅ 게임 시작 직후 치트 1초 공개
       setTimeout(cheatRevealOneSecond, 200);
     }
 
@@ -896,7 +845,7 @@
       }
     }
 
-    btnRestart.addEventListener('click', ()=> startGame(currentLetterStage, currentPairCount));
+    btnRestart.addEventListener('click', ()=> startGame(currentLetterStage));
     btnCheer.addEventListener('click', ()=> setToast(cheerMsgs[Math.floor(Math.random()*cheerMsgs.length)]));
     btnBack.addEventListener('click', ()=>{
       if(currentLetterStage === 1) showStage('stage1');
@@ -905,25 +854,17 @@
       stopTimer();
     });
 
-    // =============================
-    // 6) Stage 버튼들
-    // =============================
-    document.getElementById('btnToGame1').addEventListener('click', ()=> startGame(1, 4));
-    document.getElementById('btnToGame2').addEventListener('click', ()=> startGame(2, 6));
-    document.getElementById('btnToGame3').addEventListener('click', ()=> startGame(3, 8));
+    document.getElementById('btnToGame1').addEventListener('click', ()=> startGame(1));
+    document.getElementById('btnToGame2').addEventListener('click', ()=> startGame(2));
+    document.getElementById('btnToGame3').addEventListener('click', ()=> startGame(3));
 
-    // =============================
-    // 7) 엔딩 버튼
-    // =============================
     document.getElementById('btnAgain').addEventListener('click', ()=>{
       showStage('stage0');
       envelope.classList.remove('open');
       stopTimer();
     });
 
-    // =============================
-    // 8) Confetti
-    // =============================
+    // Confetti
     const confetti = document.getElementById('confetti');
     function fireConfetti(){
       confetti.innerHTML = "";
