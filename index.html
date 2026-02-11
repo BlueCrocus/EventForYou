@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>4주년 이벤트 💌</title>
+  <style>
+    :root{
+      --bg:#0b0b12;
+      --paper:#ffffff;
+      --ink:#151515;
+      --accent:#ff4d7d;
+      --accent2:#7c3aed;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(124,58,237,.25), transparent 55%),
+        radial-gradient(1000px 700px at 80% 30%, rgba(255,77,125,.22), transparent 50%),
+        radial-gradient(900px 600px at 50% 90%, rgba(255,255,255,.06), transparent 55%),
+        var(--bg);
+      color:#fff;
+      overflow-x:hidden;
+    }
+    .wrap{ min-height:100%; display:grid; place-items:center; padding:28px 16px 40px; }
+    .topbar{
+      width:min(980px, 100%);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin-bottom:18px; opacity:.92;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
+    .dot{
+      width:12px;height:12px;border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 6px rgba(255,77,125,.12);
+    }
+    .hint{ font-size:12px; color:rgba(255,255,255,.7); }
+
+    .stage{
+      width:min(980px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .stageInner{ padding:22px; display:none; animation: fadeUp .55s ease both; }
+    .stageInner.active{ display:block; }
+    @keyframes fadeUp{ from{ opacity:0; transform: translateY(10px); } to{ opacity:1; transform: translateY(0); } }
+
+    .btn{
+      appearance:none; border:0; border-radius: 999px;
+      padding: 12px 16px; font-weight:900;
+      cursor:pointer; color:#fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 26px rgba(255,77,125,.22);
+      transition: transform .15s ease, filter .15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.04); }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn.secondary{
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:none;
+      font-weight:850;
+    }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+
+    /* Stage 0 - Envelope */
+    .envelopeWrap{ display:grid; place-items:center; padding:44px 18px 52px; text-align:center; }
+    .title{ font-size: clamp(22px, 3.4vw, 34px); margin:0 0 10px; letter-spacing:-.4px; }
+    .sub{ margin:0 0 26px; color: rgba(255,255,255,.75); line-height:1.6; font-size: 14px; }
+
+    .envelope{
+      width:min(420px, 86vw);
+      aspect-ratio: 16/10;
+      position:relative;
+      cursor:pointer;
+      transform-style:preserve-3d;
+      transition: transform .6s cubic-bezier(.2,.8,.2,1);
+      margin: 8px 0 18px;
+    }
+    .envBase{
+      position:absolute; inset:0;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      overflow:hidden;
+    }
+    .envGlow{
+      position:absolute; inset:-30%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,77,125,.35), transparent 55%),
+                  radial-gradient(circle at 70% 60%, rgba(124,58,237,.30), transparent 55%);
+      filter: blur(18px);
+      opacity:.75;
+    }
+    .envFlap{
+      position:absolute; left:0; right:0; top:0;
+      height:58%;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: 50% 0%;
+      transition: transform .7s cubic-bezier(.2,.9,.2,1);
+      border-bottom:1px solid rgba(255,255,255,.18);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
+    }
+    .seal{
+      position:absolute; left:50%; top:52%;
+      transform: translate(-50%, -50%);
+      width:74px; height:74px; border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,77,125,.95), rgba(124,58,237,.92));
+      box-shadow: 0 16px 40px rgba(255,77,125,.18);
+      display:grid; place-items:center;
+      font-weight:900; letter-spacing:.8px;
+      border:1px solid rgba(255,255,255,.35);
+    }
+    .seal small{ opacity:.92; font-size:14px; }
+
+    .envelope.open{ transform: translateY(-4px) rotateX(8deg); }
+    .envelope.open .envFlap{ transform: rotateX(170deg); }
+    .tiny{ font-size:12px; color: rgba(255,255,255,.7); }
+
+    /* Stage 1~3 - Letter snippets */
+    .letterGrid{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items:start; }
+    @media (max-width: 860px){ .letterGrid{ grid-template-columns: 1fr; } }
+
+    .paper{
+      background: rgba(255,255,255,.92);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 18px 18px 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      position:relative;
+      overflow:hidden;
+    }
+    .paper:before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(255,77,125,.10), transparent 30%, transparent 70%, rgba(124,58,237,.10));
+      pointer-events:none;
+    }
+    .paper h2{ margin:0 0 10px; font-size:18px; letter-spacing:-.2px; }
+    .paper p{ margin:0; line-height:1.8; font-size:14.5px; white-space:pre-wrap; }
+    .sig{ margin-top:14px; color: rgba(21,21,21,.72); font-size:13px; }
+
+    .sideCard{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .sideCard h3{ margin:0 0 10px; font-size:14px; color: rgba(255,255,255,.88); }
+    .sideCard ul{ margin:0; padding-left:18px; color: rgba(255,255,255,.78); line-height:1.8; font-size:13px; }
+
+    /* Game */
+    .gameHeader{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom: 14px;
+    }
+    .gameHeader h2{ margin:0; font-size:18px; letter-spacing:-.2px; }
+    .stats{ display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color: rgba(255,255,255,.78); }
+    .pill{
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .board{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 6px 2px 10px;
+    }
+    @media (max-width: 620px){ .board{ grid-template-columns: repeat(3, 1fr); } }
+
+    .card{
+      aspect-ratio: 1 / 1.15;
+      border-radius: 16px;
+      perspective: 900px;
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+      background: transparent;
+      border:0;
+      padding:0;
+    }
+    .cardInner{
+      position:absolute; inset:0;
+      border-radius: 16px;
+      transform-style:preserve-3d;
+      transition: transform .38s cubic-bezier(.2,.8,.2,1);
+    }
+    .cardFace{
+      position:absolute; inset:0;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      backface-visibility:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden; /* ✅ 밖으로 못 나가게 */
+    }
+    .front{ background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); }
+    .front .q{ font-weight:900; font-size: 20px; opacity:.9; letter-spacing:.8px; }
+    .back{
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, rgba(255,77,125,.22), rgba(124,58,237,.18));
+      border:1px solid rgba(255,255,255,.18);
+      overflow:hidden; /* ✅ 이중 안전장치 */
+    }
+
+    /* ✅ 이미지 프레임: 모든 사진을 카드에 자동 맞춤(A: cover) */
+    .imgFrame{
+      width: 90%;
+      height: 90%;
+      border-radius: 12px;
+      overflow: hidden; /* ✅ 프레임 밖으로 절대 안 나감 */
+      box-shadow: 0 14px 26px rgba(0,0,0,.18);
+      background: rgba(255,255,255,.20);
+    }
+    .cardImg{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;         /* ✅ 비율 유지 + 꽉 채움(자동 크롭) */
+      object-position: center;   /* ✅ 중앙 기준 */
+      display: block;            /* ✅ img 밑 여백 방지 */
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none;
+    }
+
+    .card.flipped .cardInner{ transform: rotateY(180deg); }
+    .card.matched{
+      cursor:default;
+      opacity:.92;
+      transform: translateY(-1px);
+      transition: transform .2s ease;
+    }
+    .card.matched .back{
+      background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(59,130,246,.14));
+      border-color: rgba(255,255,255,.22);
+    }
+    .toast{ margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.8); min-height: 20px; }
+
+    /* ✅ 치트(전체 공개) */
+    .card.cheat .cardInner{ transform: rotateY(180deg); }
+
+    /* Ending */
+    .ending{ padding: 34px 18px 40px; text-align:center; position:relative; overflow:hidden; }
+    .big{ font-size: clamp(22px, 3.6vw, 34px); margin: 0 0 10px; }
+    .gift{
+      width: min(650px, 92vw);
+      margin: 12px auto 18px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      line-height:1.9;
+      color: rgba(255,255,255,.86);
+      font-size: 14.5px;
+      text-align:left;
+      white-space:pre-wrap;
+    }
+    .confetti{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .piece{
+      position:absolute; width: 10px; height: 16px; opacity:.9; border-radius: 3px;
+      animation: fall linear forwards;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.18));
+    }
+    @keyframes fall{
+      from{ transform: translateY(-20px) rotate(0deg); opacity:0; }
+      10%{ opacity:1; }
+      to{ transform: translateY(110vh) rotate(540deg); opacity:0.9; }
+    }
+
+    /* ✅ 칭찬 스티커 팝업 */
+    #sticker{
+      position: fixed;
+      left: 50%;
+      top: 18%;
+      transform: translate(-50%, -10px) scale(.9);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 64px;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.35));
+      transition: opacity .18s ease, transform .22s cubic-bezier(.2,.8,.2,1);
+    }
+    #sticker.show{
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .footer{
+      width:min(980px, 100%);
+      margin-top: 14px;
+      text-align:center;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand"><span class="dot"></span> 4주년 이벤트</div>
+      <div class="hint">💡 Stage1🥳 → Stage2😎 → Stage3👑 / 시작하면 1초 치트!</div>
+    </div>
+
+    <main class="stage" aria-live="polite">
+      <!-- Stage 0 -->
+      <section class="stageInner active" id="stage0">
+        <div class="envelopeWrap">
+          <h1 class="title">봉투를 열면, 이벤트 시작 💌</h1>
+          <p class="sub">스테이지를 클리어하면 편지 조각이 하나씩 열려! 마지막엔 풀버전 💝</p>
+
+          <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="봉투 열기">
+            <div class="envBase"><div class="envGlow"></div></div>
+            <div class="envFlap"></div>
+            <div class="seal"><small>OPEN</small></div>
+          </div>
+
+          <div class="row" style="justify-content:center">
+            <button class="btn" id="btnOpen">열기</button>
+            <button class="btn secondary" id="btnSkipIntro">바로가기</button>
+          </div>
+          <p class="tiny" style="margin-top:10px;">(경고: 살짝 오글 주의)</p>
+        </div>
+      </section>
+
+      <!-- Stage 1 -->
+      <section class="stageInner" id="stage1">
+        <div class="letterGrid">
+          <div class="paper">
+            <h2>편지 조각 1 / 3</h2>
+            <p id="snippet1"></p>
+            <div class="sig">— from. 장무꾼</div>
+          </div>
+          <div class="sideCard">
+            <h3>🎮 Stage 1 미션 (4쌍)</h3>
+            <ul>
+              <li>카드 8장(4쌍)만 맞추면 통과!</li>
+              <li>뇌야… 힘내라… 🧠⚡</li>
+              <li>클리어하면 다음 편지 조각 해금!</li>
+            </ul>
+            <div style="height:10px"></div>
+            <div class="row">
+              <button class="btn" id="btnToGame1">미니게임 시작</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stage 2 -->
+      <section class="stageInner" id="stage2">
+        <div class="letterGrid">
+          <div class="paper">
+            <h2>편지 조각 2 / 3</h2>
+            <p id="snippet2"></p>
+            <div class="sig">— from. 장무꾼</div>
+          </div>
+          <div class="sideCard">
+            <h3>🎮 Stage 2 미션 (6쌍)</h3>
+            <ul>
+              <li>카드 12장(6쌍)… 오케이?</li>
+              <li>틀려도 됨. 귀여움으로 무효 처리 😌</li>
+              <li>클리어하면 마지막 조각까지!</li>
+            </ul>
+            <div style="height:10px"></div>
+            <div class="row">
+              <button class="btn" id="btnToGame2">미니게임 시작</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stage 3 -->
+      <section class="stageInner" id="stage3">
+        <div class="letterGrid">
+          <div class="paper">
+            <h2>편지 조각 3 / 3</h2>
+            <p id="snippet3"></p>
+            <div class="sig">— from. 장무꾼</div>
+          </div>
+          <div class="sideCard">
+            <h3>🎮 Stage 3 미션 (8쌍)</h3>
+            <ul>
+              <li>카드 16장(8쌍) 최종 보스!</li>
+              <li>여기까지 왔으면 거의 다 했다 😎</li>
+              <li>클리어하면 풀버전 편지 OPEN 💌</li>
+            </ul>
+            <div style="height:10px"></div>
+            <div class="row">
+              <button class="btn" id="btnToGame3">미니게임 시작</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Game Stage -->
+      <section class="stageInner" id="stageGame">
+        <div class="gameHeader">
+          <div>
+            <h2 id="gameTitle">🧠 기억 맞추기</h2>
+            <div class="toast" id="toast">카드를 뒤집어 같은 사진을 찾아봐!</div>
+          </div>
+          <div class="stats">
+            <span class="pill">시도: <b id="tries">0</b></span>
+            <span class="pill">매칭: <b id="matched">0</b> / <b id="totalPairs">0</b></span>
+            <span class="pill">시간: <b id="time">0</b>s</span>
+          </div>
+        </div>
+
+        <div class="board" id="board" aria-label="카드 보드"></div>
+
+        <div class="row" style="margin-top:12px;">
+          <button class="btn secondary" id="btnRestart">다시하기</button>
+          <button class="btn" id="btnCheer">응원 한 마디</button>
+          <button class="btn secondary" id="btnBack">편지로 돌아가기</button>
+        </div>
+      </section>
+
+      <!-- Ending -->
+      <section class="stageInner" id="stageEnd">
+        <div class="ending">
+          <div class="confetti" id="confetti"></div>
+          <h2 class="big">클리어! 🎉 풀버전 편지 OPEN</h2>
+          <p style="margin:0; color:rgba(255,255,255,.78); line-height:1.7;">
+            축하해! 이제 full 편지~
+          </p>
+
+          <div class="gift" id="fullLetter"></div>
+
+          <div class="row" style="justify-content:center;">
+            <button class="btn" id="btnAgain">처음부터 다시</button>
+          </div>
+          <p class="tiny" style="margin-top:12px;">* 다음 4주년엔… 더 큰 이벤트? (협박 아님)</p>
+        </div>
+      </section>
+
+      <!-- ✅ 스티커 오버레이 -->
+      <div id="sticker" aria-hidden="true"></div>
+    </main>
+
+    <div class="footer">널 위해 만들어본 작은 이벤트</div>
+  </div>
+
+  <script>
+    // =============================
+    // 0) 스테이지 전환
+    // =============================
+    const stages = {
+      stage0: document.getElementById('stage0'),
+      stage1: document.getElementById('stage1'),
+      stage2: document.getElementById('stage2'),
+      stage3: document.getElementById('stage3'),
+      stageGame: document.getElementById('stageGame'),
+      stageEnd: document.getElementById('stageEnd'),
+    };
+
+    function showStage(id){
+      Object.values(stages).forEach(s => s.classList.remove('active'));
+      stages[id].classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // =============================
+    // 1) 이미지(8장) - 너 폴더 기준
+    // =============================
+    const ALL_IMAGES = [
+      "img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg",
+      "img/5.jpg","img/6.jpg","img/7.jpg","img/8.jpg",
+    ];
+
+    // =============================
+    // 2) 편지 조각(1~2줄) + 풀버전
+    // =============================
+    const snippet1 = `우리가 만난지 어느덧 4년이 됐는데,\n이젠 너가 없는 앞으로가 짐작도 안가—`;
+    const snippet2 = `나의 20대는 쭉 너로 추억이 될거야! \n항상 나에게 힘이 되어줘서 고마워♥️`;
+    const snippet3 = `사실 편지로 어떤 내용을 적어야할지 어려웠어...\n나름 열심히 하는데 이쁘게 봐조..`;
+
+    document.getElementById('snippet1').textContent = snippet1;
+    document.getElementById('snippet2').textContent = snippet2;
+    document.getElementById('snippet3').textContent = snippet3;
+
+    const fullLetterText =
+`안녕? 우리의 4주년 축하해!
+우리가 22살에 만나서 벌써 26살이야!
+대학 CC를 시작으로 졸업하고도 이렇게 잘 지내고 있다는게 너무 좋다!
+
+말로만 축하하기엔 아쉬워서 기억에 남을만한게 뭘까 생각하다가
+작은 이벤트 만들어봤어!
+
+어때 조금 감동적인가??
+동생한테 보여주니까 눈물난다던디?
+
+나름 공부한걸로 너에게 보여주고싶었어!
+이 길이 내 길이 아니라도 항상 응원해줘서 고마워♥️
+
+우리의 4주년 축하해!
+앞으로도 잘 부탁해-
+
+넌 나에게 있어 빛이고, 내 구원이야!
+
+사랑해요♥️
+`;
+
+    document.getElementById('fullLetter').textContent = fullLetterText;
+
+    // =============================
+    // 3) 인트로(봉투)
+    // =============================
+    const envelope = document.getElementById('envelope');
+    const btnOpen = document.getElementById('btnOpen');
+    const btnSkipIntro = document.getElementById('btnSkipIntro');
+
+    function openEnvelope(){
+      envelope.classList.add('open');
+      setTimeout(()=> showStage('stage1'), 650);
+    }
+    envelope.addEventListener('click', openEnvelope);
+    envelope.addEventListener('keydown', (e)=> { if(e.key==='Enter'||e.key===' ') openEnvelope(); });
+    btnOpen.addEventListener('click', openEnvelope);
+    btnSkipIntro.addEventListener('click', ()=> showStage('stage1'));
+
+    // =============================
+    // 4) 스티커 팝업 (Stage별 이모지)
+    // =============================
+    const stickerEl = document.getElementById('sticker');
+    const STAGE_STICKER = { 1:"🥳", 2:"😎", 3:"👑" };
+
+    function popSticker(emoji){
+      if(!stickerEl) return;
+      stickerEl.textContent = emoji;
+      stickerEl.classList.add('show');
+      setTimeout(()=> stickerEl.classList.remove('show'), 650);
+    }
+
+    // =============================
+    // 5) 게임 공통 로직
+    // =============================
+    const board = document.getElementById('board');
+    const toast = document.getElementById('toast');
+    const triesEl = document.getElementById('tries');
+    const matchedEl = document.getElementById('matched');
+    const totalPairsEl = document.getElementById('totalPairs');
+    const timeEl = document.getElementById('time');
+    const gameTitle = document.getElementById('gameTitle');
+
+    const btnRestart = document.getElementById('btnRestart');
+    const btnCheer = document.getElementById('btnCheer');
+    const btnBack = document.getElementById('btnBack');
+
+    const cheerMsgs = [
+      "뇌야… 일해라… 🧠⚡",
+      "이거 맞추면 풀편지 열린다. 진짜임. (아마도)",
+      "지금 너… 천재 모드 켰지?",
+      "실패해도 귀여움으로 상쇄됨 😌",
+      "한 번만 더! 내가 봐준다 😎",
+    ];
+
+    let currentLetterStage = 1; // 1,2,3
+    let currentPairCount = 4;
+
+    let deck = [];
+    let first = null;
+    let second = null;
+    let lock = false;
+
+    let tries = 0;
+    let matched = 0;
+    let timer = null;
+    let seconds = 0;
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function setToast(msg){ toast.textContent = msg; }
+
+    function resetStats(pairCount){
+      tries = 0;
+      matched = 0;
+      seconds = 0;
+      triesEl.textContent = tries;
+      matchedEl.textContent = matched;
+      totalPairsEl.textContent = pairCount;
+      timeEl.textContent = seconds;
+    }
+
+    function stopTimer(){
+      if(timer){ clearInterval(timer); timer = null; }
+    }
+    function startTimer(){
+      stopTimer();
+      timer = setInterval(()=>{
+        seconds++;
+        timeEl.textContent = seconds;
+      }, 1000);
+    }
+
+    function buildBoard(pairCount){
+      board.innerHTML = "";
+      const picked = shuffle(ALL_IMAGES).slice(0, pairCount);
+
+      deck = shuffle([...picked, ...picked]).map((src, idx)=>({
+        id: idx,
+        src,
+        matched:false
+      }));
+
+      deck.forEach((c)=>{
+        const card = document.createElement('button');
+        card.className = "card";
+        card.type = "button";
+        card.dataset.id = c.id;
+
+        card.innerHTML = `
+          <div class="cardInner">
+            <div class="cardFace front"><div class="q">?</div></div>
+            <div class="cardFace back">
+              <div class="imgFrame">
+                <img class="cardImg" src="${c.src}" alt="memory card" draggable="false" />
+              </div>
+            </div>
+          </div>
+        `;
+        card.addEventListener('click', ()=> onFlip(card));
+        board.appendChild(card);
+      });
+    }
+
+    function flip(cardEl, on){ cardEl.classList.toggle('flipped', on); }
+    function markMatched(cardEl){
+      cardEl.classList.add('matched');
+      cardEl.disabled = true;
+      cardEl.setAttribute('aria-disabled','true');
+    }
+
+    // ✅ 시작할 때 1초 치트 공개
+    function cheatRevealOneSecond(){
+      const cards = board.querySelectorAll('.card');
+      cards.forEach(c => c.classList.add('cheat'));
+      setToast("치트 발동! 1초만 전체 공개 😎");
+
+      setTimeout(()=>{
+        cards.forEach(c => c.classList.remove('cheat'));
+        setToast("치트 종료. 이제 진짜 실력 보여줘 👀");
+      }, 1000);
+    }
+
+    function onFlip(cardEl){
+      if(lock) return;
+
+      const id = Number(cardEl.dataset.id);
+      const card = deck[id];
+      if(card.matched) return;
+      if(cardEl === first) return;
+
+      if(tries === 0 && matched === 0 && seconds === 0 && !timer){
+        startTimer();
+      }
+
+      flip(cardEl, true);
+
+      if(!first){
+        first = cardEl;
+        setToast("좋아! 하나 더 뒤집어봐 👀");
+        return;
+      }
+
+      second = cardEl;
+      tries++;
+      triesEl.textContent = tries;
+
+      const a = deck[Number(first.dataset.id)].src;
+      const b = deck[Number(second.dataset.id)].src;
+
+      if(a === b){
+        deck[Number(first.dataset.id)].matched = true;
+        deck[Number(second.dataset.id)].matched = true;
+
+        markMatched(first);
+        markMatched(second);
+
+        matched++;
+        matchedEl.textContent = matched;
+        setToast("매칭 성공! 🎯");
+
+        first = null; second = null;
+
+        if(matched === currentPairCount){
+          stopTimer();
+
+          // ✅ Stage별 스티커
+          popSticker(STAGE_STICKER[currentLetterStage] || "🥳");
+
+          setToast("클리어! 다음 편지로 이동한다… ✨");
+          setTimeout(()=> advanceAfterWin(), 850);
+        }
+      } else {
+        lock = true;
+        setToast("아쉽다! 잠깐 보여줄게 😝");
+        setTimeout(()=>{
+          flip(first, false);
+          flip(second, false);
+          first = null;
+          second = null;
+          lock = false;
+          setToast("다시! 이번엔 맞출 수 있어 💪");
+        }, 750);
+      }
+    }
+
+    function startGame(letterStage, pairCount){
+      currentLetterStage = letterStage;
+      currentPairCount = pairCount;
+
+      gameTitle.textContent = `🧠 Stage ${letterStage} 기억 맞추기 (${pairCount}쌍)`;
+      resetStats(pairCount);
+      first = null; second = null; lock = false;
+      stopTimer();
+      buildBoard(pairCount);
+      setToast("카드를 뒤집어 같은 사진을 찾아봐!");
+      showStage('stageGame');
+
+      // ✅ 게임 시작 직후 치트 1초 공개
+      setTimeout(cheatRevealOneSecond, 200);
+    }
+
+    function advanceAfterWin(){
+      if(currentLetterStage === 1) showStage('stage2');
+      else if(currentLetterStage === 2) showStage('stage3');
+      else {
+        showStage('stageEnd');
+        fireConfetti();
+      }
+    }
+
+    btnRestart.addEventListener('click', ()=> startGame(currentLetterStage, currentPairCount));
+    btnCheer.addEventListener('click', ()=> setToast(cheerMsgs[Math.floor(Math.random()*cheerMsgs.length)]));
+    btnBack.addEventListener('click', ()=>{
+      if(currentLetterStage === 1) showStage('stage1');
+      if(currentLetterStage === 2) showStage('stage2');
+      if(currentLetterStage === 3) showStage('stage3');
+      stopTimer();
+    });
+
+    // =============================
+    // 6) Stage 버튼들
+    // =============================
+    document.getElementById('btnToGame1').addEventListener('click', ()=> startGame(1, 4));
+    document.getElementById('btnToGame2').addEventListener('click', ()=> startGame(2, 6));
+    document.getElementById('btnToGame3').addEventListener('click', ()=> startGame(3, 8));
+
+    // =============================
+    // 7) 엔딩 버튼
+    // =============================
+    document.getElementById('btnAgain').addEventListener('click', ()=>{
+      showStage('stage0');
+      envelope.classList.remove('open');
+      stopTimer();
+    });
+
+    // =============================
+    // 8) Confetti
+    // =============================
+    const confetti = document.getElementById('confetti');
+    function fireConfetti(){
+      confetti.innerHTML = "";
+      const count = 70;
+      for(let i=0;i<count;i++){
+        const p = document.createElement('div');
+        p.className = "piece";
+        const left = Math.random()*100;
+        const delay = Math.random()*0.35;
+        const dur = 2.6 + Math.random()*1.3;
+        const rot = Math.random()*360;
+        const w = 8 + Math.random()*10;
+        const h = 10 + Math.random()*14;
+        const hue = Math.floor(Math.random()*360);
+
+        p.style.left = left + "vw";
+        p.style.animationDelay = delay + "s";
+        p.style.animationDuration = dur + "s";
+        p.style.transform = `translateY(-20px) rotate(${rot}deg)`;
+        p.style.width = w + "px";
+        p.style.height = h + "px";
+        p.style.background = `hsl(${hue} 90% 65%)`;
+        confetti.appendChild(p);
+
+        setTimeout(()=> p.remove(), (delay+dur)*1000 + 200);
+      }
+    }
+  </script>
+</body>
+</html>
